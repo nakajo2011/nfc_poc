@@ -1,0 +1,133 @@
+D/NxpNciR: len = 28 <= 61051901020401FF010C0BD26BE2D7000041E0B381A1010000020100 
+D/NxpHal: NxpNci: RF Interface = ISO-DEP 
+D/NxpHal: NxpNci: Protocol = ISO-DEP 
+D/NxpHal: NxpNci: Mode = B Passive Poll 
+D/NxpNciX: len = 4 => 21060103 
+D/NxpNciR: len = 4 <= 41060100 
+D/NxpNciR: len = 5 <= 6106020300 
+D/NxpNciX: len = 4 => 21060100 
+D/NxpNciR: len = 4 <= 41060100 
+D/NxpNciX: len = 10 => 20020702320120380101 
+D/NxpNciR: len = 5 <= 4002020000 
+D/NxpHal: phNxpNciHal_print_res_status: response status =STATUS_OK 
+D/NxpNciX: len = 24 => 2103150A0001010102010301050180018101820106017001 
+D/NxpNciR: len = 4 <= 41030100 
+D/NxpNciR: len = 28 <= 61051901020401FF010C0BDEF35EAB000041E0B381A1010000020100 
+D/NxpHal: NxpNci: RF Interface = ISO-DEP 
+D/NxpHal: NxpNci: Protocol = ISO-DEP 
+D/NxpHal: NxpNci: Mode = B Passive Poll 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 16 => 00000D00A4040007D276000085010100 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000026A82 
+D/NxpNciX: len = 15 => 00000C00A4040007D2760000850100 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000026A86 
+D/NxpNciX: len = 4 => 21060101 
+D/NxpNciR: len = 4 <= 41060100 
+D/NxpNciR: len = 5 <= 6106020000 
+D/NxpNciX: len = 10 => 20020702320120380101 
+D/NxpNciR: len = 5 <= 4002020000 
+D/NxpHal: phNxpNciHal_print_res_status: response status =STATUS_OK 
+D/NxpNciX: len = 24 => 2103150A0001010102010301050180018101820106017001 
+D/NxpNciR: len = 4 <= 41030100 
+D/NxpNciR: len = 28 <= 61051901020401FF010C0B4E766929000041E0B381A1010000020100 
+D/NxpHal: NxpNci: RF Interface = ISO-DEP 
+D/NxpHal: NxpNci: Protocol = ISO-DEP 
+D/NxpHal: NxpNci: Mode = B Passive Poll 
+D/NxpNciX: len = 16 => 00000D00A4040007D276000085010100 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000026A82 
+D/NxpNciX: len = 15 => 00000C00A4040007D2760000850100 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000026A86 
+D/NxpNciX: len = 4 => 21060101 
+D/NxpNciR: len = 4 <= 41060100 
+D/NxpNciR: len = 5 <= 6106020000 
+D/NxpNciX: len = 10 => 20020702320120380101 
+D/NxpNciR: len = 5 <= 4002020000 
+D/NxpHal: phNxpNciHal_print_res_status: response status =STATUS_OK 
+D/NxpNciX: len = 24 => 2103150A0001010102010301050180018101820106017001 
+D/NxpNciR: len = 4 <= 41030100 
+D/NxpNciR: len = 28 <= 61051901020401FF010C0B90DF9B54000041E0B381A1010000020100 
+D/NxpHal: NxpNci: RF Interface = ISO-DEP 
+D/NxpHal: NxpNci: Protocol = ISO-DEP 
+D/NxpHal: NxpNci: Mode = B Passive Poll 
+D/NxpNciX: len = 18 => 00000F00A4040C0AD3921000310001010408 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 18 => 00000F00A4040C0AD3921000310001010408 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 10 => 00000700A4020C020011 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263C3 
+D/NxpNciX: len = 10 => 00000700A4020C020014 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263CA 
+D/NxpNciX: len = 10 => 00000700A4020C020015 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263CA 
+D/NxpNciX: len = 18 => 00000F00A4040C0AD3921000310001010402 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 10 => 00000700A4020C020013 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263CA 
+D/NxpNciX: len = 10 => 00000700A4020C020012 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263CA 
+D/NxpNciX: len = 18 => 00000F00A4040C0AD392F000260100000001 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 10 => 00000700A4020C020018 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263C3 
+D/NxpNciX: len = 10 => 00000700A4020C02001B 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 0000029000 
+D/NxpNciX: len = 7 => 00000400200080 
+D/NxpNciR: len = 6 <= 600603010001 
+D/NxpNciR: len = 5 <= 00000263C5 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110101 
+D/NxpNciX: len = 3 => 2F1100 
+D/NxpNciR: len = 4 <= 4F110100 
+D/NxpNciR: len = 4 <= 6F110100 
+D/NxpNciX: len = 4 => 21060103 
+D/NxpNciR: len = 4 <= 41060100 
+D/NxpNciR: len = 5 <= 6106020300 
+

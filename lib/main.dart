@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:nfc_poc/views/pages/MyNumberPage.dart';
 import 'package:nfc_poc/views/pages/HomePage.dart';
+import 'package:nfc_poc/views/pages/SuicaPage.dart';
+
+const String MyNumberPageName = "myNumber";
+const String SuicaPageName = "Suica";
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -28,7 +33,11 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder> {
+        MyNumberPageName: (BuildContext context) => new MyNumberPage(title: 'マイナンバー読み取り'),
+        SuicaPageName: (BuildContext context) => new SuicaPage(title: 'Suicaの読み取り')
+      },
     );
   }
 }

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:nfc_poc/views/pages/HomePage.dart';
+import 'package:nfc_poc/views/pages/PersonalInfoPage.dart';
+import 'package:nfc_poc/views/pages/SelfCertPage.dart';
+
+const String PersonalInfoPageName = "personalInfo";
+const String SelfCertPageName = "selfCert";
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -28,7 +33,11 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder> {
+        PersonalInfoPageName: (BuildContext context) => new PersonalInfoPage(title: '券面情報読み取り'),
+        SelfCertPageName: (BuildContext context) => new SelfCertPage(title: '自己証明書の読み取り')
+      },
     );
   }
 }

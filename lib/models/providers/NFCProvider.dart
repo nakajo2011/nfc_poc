@@ -7,6 +7,7 @@ import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
 import 'package:nfc_poc/models/apdu/APDUCommunicator.dart';
 import 'package:nfc_poc/models/apdu/APDUErrors.dart';
+import 'package:x509/x509.dart';
 
 /**
  * デバイスのNFC機器とやりとりするクラス。
@@ -128,7 +129,7 @@ class NFCProvider {
       APDUCommunicator communicator = APDUCommunicator(isodep);
       String certificatePEM =
           await CertificateAP(communicator).selectUserCertificate();
-      notify("NFCの読み取り終了: ${certificatePEM}");
+      notify("NFCの読み取り終了: ${parsePem(certificatePEM).first}");
       for (int i = 0; i < certificatePEM.length; i += 256) {
         int endIndex = i + 256 > certificatePEM.length ? certificatePEM.length : i + 256;
         print(certificatePEM.substring(i, endIndex));

@@ -9,7 +9,7 @@ import 'package:nfc_poc/views/widgets/EasyTextField.dart';
  * 自己証明書を読み取るためのページ
  *
  */
-final certReader = StateNotifierProvider((_) => SelfCertReadNotifier());
+final certReader = StateNotifierProvider<SelfCertReadNotifier, SelfCertState>((_) => SelfCertReadNotifier());
 
 class SelfCertPage extends ConsumerWidget {
   SelfCertPage({Key key, this.title}) : super(key: key);
@@ -17,7 +17,8 @@ class SelfCertPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final SelfCertReadNotifier reader = watch(certReader);
+    final SelfCertReadNotifier reader = watch(certReader.notifier);
+    final SelfCertState state = watch(certReader);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,11 +29,11 @@ class SelfCertPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              readNfcButton(watch(certReader.state).isNFCSupported, () {
+              readNfcButton(state.isNFCSupported, () {
                 reader.connect();
               }),
               Text(
-                'NFCサポート: ${watch(certReader.state).isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
+                'NFCサポート: ${state.isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
               ),
               Expanded(
                 child: Container(
@@ -42,7 +43,7 @@ class SelfCertPage extends ConsumerWidget {
                   child: SingleChildScrollView(
                     child: Padding(
                         padding: const EdgeInsets.all(24.0),
-                        child: Text('${watch(certReader.state).stateMessage}')),
+                        child: Text('${state.stateMessage}')),
                   ),
                 ),
               ),

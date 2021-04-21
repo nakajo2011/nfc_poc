@@ -24,7 +24,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final textFieldKey = GlobalKey<EasyTextFieldState>();
-    final NFCNotifier nfc = watch(nfcProvider);
+    final NFCNotifier nfc = watch(nfcProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

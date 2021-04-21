@@ -18,7 +18,7 @@ class CounterNotifier extends StateNotifier<int> {
 }
 
 final counterProvider = StateNotifierProvider((_) => CounterNotifier());
-final nfcProvider = StateNotifierProvider((_) => NFCNotifier());
+final nfcProvider = StateNotifierProvider<NFCNotifier, NFCState>((_) => NFCNotifier());
 
 class PersonalInfoPage extends ConsumerWidget {
   PersonalInfoPage({Key key, this.title}) : super(key: key);
@@ -27,7 +27,8 @@ class PersonalInfoPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final textFieldKey = GlobalKey<EasyTextFieldState>();
-    final NFCNotifier nfc = watch(nfcProvider);
+    final NFCNotifier nfc = watch(nfcProvider.notifier);
+    final NFCState state = watch(nfcProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,16 +41,16 @@ class PersonalInfoPage extends ConsumerWidget {
             children: <Widget>[
               EasyTextField(
                 key: textFieldKey,
-                initialText: watch(nfcProvider.state).pinCode,
+                initialText: state.pinCode,
               ),
-              readNfcButton(watch(nfcProvider.state).isNFCSupported, () {
+              readNfcButton(state.isNFCSupported, () {
                 String inputedCode = (textFieldKey.currentState as EasyTextFieldState).controller.text;
                 nfc.setPinCode(inputedCode);
                 print(inputedCode);
                 nfc.connect(inputedCode);
               }),
               Text(
-                'NFCサポート: ${watch(nfcProvider.state).isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
+                'NFCサポート: ${state.isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
               ),
               Expanded(
                 child: Container(
@@ -59,7 +60,7 @@ class PersonalInfoPage extends ConsumerWidget {
                   child: SingleChildScrollView(
                     child: Padding(
                         padding: const EdgeInsets.all(24.0),
-                        child: Text('${watch(nfcProvider.state).stateMessage}')),
+                        child: Text('${state.stateMessage}')),
                   ),
                 ),
               ),

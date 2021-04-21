@@ -12,7 +12,7 @@ import 'package:collection/collection.dart';
  */
 class APDUCommunicator {
   APDUCommunicator(this.isoDep);
-  IsoDep isoDep;
+  IsoDep? isoDep;
 
   /// 指定されたAPDU のコマンドを実行します。
   /// 実行結果を APDUResponseとして返します。
@@ -20,7 +20,7 @@ class APDUCommunicator {
   Future<APDUResponse> read(APDUCommand command) async {
     print("command=${command.dumpPayload}");
 
-    Uint8List res = await isoDep.transceive(data: command.payload);
+    Uint8List res = await isoDep!.transceive(data: command.payload);
     APDUResponse response =  APDUResponse(res);
 
     print(response);
@@ -35,8 +35,8 @@ class APDUCommunicator {
       if (perLength > 256) perLength = 256;
 
       APDUResponse res = await this.read(APDUCommands.readBinary(int16Bytes(i), perLength));
-      print("perLength=${perLength}, readBytes=${res.bodyBytes.length}");
-      buf.setAll(i, res.bodyBytes);
+      print("perLength=${perLength}, readBytes=${res.bodyBytes!.length}");
+      buf.setAll(i, res.bodyBytes!);
       print("buf.length=${buf.length}");
     }
     return buf;
@@ -63,10 +63,10 @@ class APDUResponse {
     return ListEquality().equals(SUCCESS_CODE, this.responseCode);
   }
   bool get isError => !isSuccess;
-  bool get hasBody => bodyBytes != null && bodyBytes.length > 0;
+  bool get hasBody => bodyBytes != null && bodyBytes!.length > 0;
 
-  Uint8List bodyBytes;
-  Uint8List responseCode;
+  Uint8List? bodyBytes;
+  Uint8List? responseCode;
   
   void throwException() {
     throw APDUException.fromAPDUResponse(this);
@@ -75,8 +75,8 @@ class APDUResponse {
   toHex(num) => num.toRadixString(16).padLeft(2, "0");
   @override
   String toString() {
-    String code = responseCode.map(toHex).join(":");
-    String body = bodyBytes == null ? "null" : bodyBytes.map((e) => toHex(e)).join(" ");
+    String code = responseCode!.map(toHex).join(":");
+    String body = bodyBytes == null ? "null" : bodyBytes!.map((e) => toHex(e)).join(" ");
     return "APDUResponse: isSuccess=${isSuccess}, code=${code}, body=${body}";
   }
 }

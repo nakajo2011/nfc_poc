@@ -15,15 +15,15 @@ import 'package:x509/x509.dart';
 typedef StateHandlerCB = void Function(String stateMessage);
 
 class NFCProvider {
-  StateHandlerCB stateHandler;
-  String pinCode;
+  StateHandlerCB? stateHandler;
+  String? pinCode;
 
   void setHandler(StateHandlerCB handler) {
     this.stateHandler = handler;
   }
 
   void notify(String message) {
-    if (this.stateHandler != null) this.stateHandler(message);
+    if (this.stateHandler != null) this.stateHandler!(message);
   }
 
   Future<bool> checkNFCAvailable() async {
@@ -54,12 +54,12 @@ class NFCProvider {
   // マイナンバーカード にアクセスして券面情報を読み取る。
   Future<void> connect(String pinCode) async {
     this.pinCode = pinCode;
-    if (this.pinCode.length != 4) {
+    if (this.pinCode!.length != 4) {
       notify("エラー:暗証番号の桁数が４桁ではありません。");
       return;
     }
     try {
-      int.parse(this.pinCode);
+      int.parse(this.pinCode!);
     } catch (e) {
       notify("エラー:暗証番号は数字４桁を入力してください。: $e");
     }
@@ -86,23 +86,27 @@ class NFCProvider {
       });
       notify("NFCの読み取り中....");
 
-      Ndef ndef = Ndef.from(tag);
-      IsoDep isodep = IsoDep.from(tag);
-      APDUCommunicator communicator = APDUCommunicator(isodep);
-      // String certificatePEM =
-      //     await CertificateAP(communicator).selectUserCertificate();
-      // notify("NFCの読み取り終了: ${certificatePEM}");
-      // for(int i=0; i<certificatePEM.length; i+=256) {
-      //   int endIndex = i + 256 > certificatePEM.length ? certificatePEM.length : i + 256;
-      //   print(certificatePEM.substring(i, endIndex));
-      // }
+      Ndef? ndef = Ndef.from(tag);
+      IsoDep? isodep = IsoDep.from(tag);
+      if(isodep == null) {
+        notify("不明なNFCです。 ndef=${ndef}");
+      } else {
+        APDUCommunicator communicator = APDUCommunicator(isodep);
+        // String certificatePEM =
+        //     await CertificateAP(communicator).selectUserCertificate();
+        // notify("NFCの読み取り終了: ${certificatePEM}");
+        // for(int i=0; i<certificatePEM.length; i+=256) {
+        //   int endIndex = i + 256 > certificatePEM.length ? certificatePEM.length : i + 256;
+        //   print(certificatePEM.substring(i, endIndex));
+        // }
 
-      TextConfirmAP textAP = TextConfirmAP(communicator);
-      String result = await textAP.readMyNumber(this.pinCode);
-      result += await textAP.readAttributes(this.pinCode);
-      int remainingCount = await textAP.lookupPIN();
-      result += "券面入力補助PIN 残り試行回数：${remainingCount}回";
-      notify("NFCの読み取り終了：${result}");
+        TextConfirmAP textAP = TextConfirmAP(communicator);
+        String result = await textAP.readMyNumber(this.pinCode!);
+        result += await textAP.readAttributes(this.pinCode!);
+        int remainingCount = await textAP.lookupPIN();
+        result += "券面入力補助PIN 残り試行回数：${remainingCount}回";
+        notify("NFCの読み取り終了：${result}");
+      }
     } catch (e, stackTrace) {
       if (e is InvalidPINException) {
         notify("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回");
@@ -125,14 +129,20 @@ class NFCProvider {
       });
       notify("NFCの読み取り中....");
 
-      IsoDep isodep = IsoDep.from(tag);
-      APDUCommunicator communicator = APDUCommunicator(isodep);
-      String certificatePEM =
-          await CertificateAP(communicator).selectUserCertificate();
-      notify("NFCの読み取り終了: ${parsePem(certificatePEM).first}");
-      for (int i = 0; i < certificatePEM.length; i += 256) {
-        int endIndex = i + 256 > certificatePEM.length ? certificatePEM.length : i + 256;
-        print(certificatePEM.substring(i, endIndex));
+      IsoDep? isodep = IsoDep.from(tag);
+      if(isodep == null) {
+        notify("不明なNFCです。 nfcTag=${tag}");
+      } else {
+        APDUCommunicator communicator = APDUCommunicator(isodep);
+        String certificatePEM =
+        await CertificateAP(communicator).selectUserCertificate();
+        notify("NFCの読み取り終了: ${parsePem(certificatePEM).first}");
+        for (int i = 0; i < certificatePEM.length; i += 256) {
+          int endIndex = i + 256 > certificatePEM.length
+              ? certificatePEM.length
+              : i + 256;
+          print(certificatePEM.substring(i, endIndex));
+        }
       }
     } catch (e, stackTrace) {
       notify("NFCの読み取りでエラーが発生しました。 ${e.toString()}");

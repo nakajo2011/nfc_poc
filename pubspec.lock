@@ -56,7 +56,7 @@ packages:
       name: convert
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "3.0.0"
   crypto_keys:
     dependency: transitive
     description:
@@ -129,7 +129,7 @@ packages:
       name: nfc_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "3.0.0+1"
   path:
     dependency: transitive
     description:

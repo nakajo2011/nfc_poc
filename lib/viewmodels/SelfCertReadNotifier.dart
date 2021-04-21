@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
 class SelfCertState {
-  final bool isNFCSupported;
-  String stateMessage;
+  final bool? isNFCSupported;
+  String? stateMessage;
   SelfCertState({this.isNFCSupported, this.stateMessage});
 
   SelfCertState copyWith({isNFCSupported, stateMessage}) {
@@ -15,9 +15,8 @@ class SelfCertState {
 
 /// マイナンバーカード から自己証明書の読み取りを通知するためのNotifier
 class SelfCertReadNotifier extends StateNotifier<SelfCertState> {
-  NFCProvider _nfcProvider;
+  NFCProvider _nfcProvider = NFCProvider();
   SelfCertReadNotifier() : super(SelfCertState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
-    _nfcProvider =  NFCProvider();
     _nfcProvider.setHandler(stateHandler);
     checkAvailable();
   }

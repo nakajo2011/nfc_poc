@@ -56,12 +56,12 @@ class APDUCommand3 extends APDUCommand {
   /// パラメータバイト2(1byte)
   final int p2;
   /// コマンドデータの長さ(1 or 3byte)
-  int lc;
+  int? lc;
   /// コマンドデータ
   final Uint8List data;
 
   @override
-  Uint8List get payload => Uint8List.fromList([cla, ins, p1, p2, lc, ...data]);
+  Uint8List get payload => Uint8List.fromList([cla, ins, p1, p2, lc!, ...data]);
 
 }
 
@@ -79,13 +79,13 @@ class APDUCommand4 extends APDUCommand {
   /// パラメータバイト2(1byte)
   final int p2;
   /// コマンドデータの長さ(1 or 3byte)
-  int lc;
+  int? lc;
   /// コマンドデータ
   Uint8List data;
   /// レスポンスデータの期待される最大サイズ(1 or 3byte)
   final int le;
 
   @override
-  Uint8List get payload => Uint8List.fromList([cla, ins, p1, p2, lc, ...data, le]);
+  Uint8List get payload => Uint8List.fromList([cla, ins, p1, p2, lc!, ...data, le]);
 
 }

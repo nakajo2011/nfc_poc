@@ -21,7 +21,7 @@ final counterProvider = StateNotifierProvider((_) => CounterNotifier());
 final nfcProvider = StateNotifierProvider<NFCNotifier, NFCState>((_) => NFCNotifier());
 
 class PersonalInfoPage extends ConsumerWidget {
-  PersonalInfoPage({Key key, this.title}) : super(key: key);
+  PersonalInfoPage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -41,16 +41,16 @@ class PersonalInfoPage extends ConsumerWidget {
             children: <Widget>[
               EasyTextField(
                 key: textFieldKey,
-                initialText: state.pinCode,
+                initialText: state.pinCode!,
               ),
-              readNfcButton(state.isNFCSupported, () {
-                String inputedCode = (textFieldKey.currentState as EasyTextFieldState).controller.text;
+              readNfcButton(state.isNFCSupported!, () {
+                String inputedCode = (textFieldKey.currentState as EasyTextFieldState).controller!.text;
                 nfc.setPinCode(inputedCode);
                 print(inputedCode);
                 nfc.connect(inputedCode);
               }),
               Text(
-                'NFCサポート: ${state.isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
+                'NFCサポート: ${state.isNFCSupported! ? "OK" : "NFCがOFFになっています。"}',
               ),
               Expanded(
                 child: Container(
@@ -114,7 +114,7 @@ Container boxShadow(Widget child) {
   );
 }
 
-RaisedButton readNfcButton(bool nfcAvailable, Function func) {
+RaisedButton readNfcButton(bool nfcAvailable, void Function()? func) {
   Color bcolor = nfcAvailable ? Colors.lightBlueAccent : Colors.black12;
   return RaisedButton(
     child: const Text(

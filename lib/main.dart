@@ -33,10 +33,10 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(key: GlobalKey(), title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder> {
-        PersonalInfoPageName: (BuildContext context) => new PersonalInfoPage(title: '券面情報読み取り'),
-        SelfCertPageName: (BuildContext context) => new SelfCertPage(title: '自己証明書の読み取り')
+        PersonalInfoPageName: (BuildContext context) => new PersonalInfoPage(key: GlobalKey(), title: '券面情報読み取り'),
+        SelfCertPageName: (BuildContext context) => new SelfCertPage(key: GlobalKey(), title: '自己証明書の読み取り')
       },
     );
   }

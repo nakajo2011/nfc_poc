@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
 class NFCState {
-  final bool isNFCSupported;
-  String stateMessage;
-  String pinCode;
+  final bool? isNFCSupported;
+  String? stateMessage;
+  String? pinCode;
   NFCState({this.isNFCSupported, this.stateMessage, this.pinCode});
 
   NFCState copyWith({isNFCSupported, stateMessage, pinCode}) {
@@ -17,9 +17,8 @@ class NFCState {
 
 /// NFCの読み取り状況を通知するためのNotifier
 class NFCNotifier extends StateNotifier<NFCState> {
-  NFCProvider _nfcProvider;
+  NFCProvider _nfcProvider = NFCProvider();
   NFCNotifier() : super(NFCState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
-    _nfcProvider =  NFCProvider();
     _nfcProvider.setHandler(stateHandler);
     checkAvailable();
   }

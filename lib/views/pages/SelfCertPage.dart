@@ -12,7 +12,7 @@ import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 final certReader = StateNotifierProvider<SelfCertReadNotifier, SelfCertState>((_) => SelfCertReadNotifier());
 
 class SelfCertPage extends ConsumerWidget {
-  SelfCertPage({Key key, this.title}) : super(key: key);
+  SelfCertPage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -29,11 +29,11 @@ class SelfCertPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              readNfcButton(state.isNFCSupported, () {
+              readNfcButton(state.isNFCSupported!, () {
                 reader.connect();
               }),
               Text(
-                'NFCサポート: ${state.isNFCSupported ? "OK" : "NFCがOFFになっています。"}',
+                'NFCサポート: ${state.isNFCSupported! ? "OK" : "NFCがOFFになっています。"}',
               ),
               Expanded(
                 child: Container(
@@ -97,7 +97,7 @@ Container boxShadow(Widget child) {
   );
 }
 
-RaisedButton readNfcButton(bool nfcAvailable, Function func) {
+RaisedButton readNfcButton(bool nfcAvailable, void Function()? func) {
   Color bcolor = nfcAvailable ? Colors.lightBlueAccent : Colors.black12;
   return RaisedButton(
     child: const Text(

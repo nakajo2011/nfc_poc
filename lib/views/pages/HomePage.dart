@@ -18,7 +18,7 @@ final counterProvider = StateNotifierProvider((_) => CounterNotifier());
 final nfcProvider = StateNotifierProvider((_) => NFCNotifier());
 
 class HomePage extends ConsumerWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override

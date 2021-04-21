@@ -14,10 +14,10 @@ class APDUException extends IOException {
 
   int sw1;
   int sw2;
-  String message;
+  String? message;
 
   static APDUException fromAPDUResponse(APDUResponse response) {
-    Uint8List code = response.responseCode;
+    Uint8List code = response.responseCode!;
     if(code[0] == 0x63) {
       return new InvalidPINException(code[0], code[1]);
     }
@@ -30,7 +30,7 @@ class APDUException extends IOException {
   }
 
   /// https://www.nmda.or.jp/nmda/ic-card/iso10536/sec4.html「表4.17 ステータスコードとその意味」　より
-  String _message() {
+  String? _message() {
     switch (sw1) {
       case 0x62:
         switch (sw2) {
@@ -142,5 +142,5 @@ class InvalidPINException extends APDUException {
     }
   }
 
-  int retry;
+  int retry = -1;
 }

@@ -36,7 +36,7 @@ class HomePage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               button(context, '券面情報読み取り', PersonalInfoPageName),
-              button(context, '自己証明書読み取り', SelfCertPageName),
+              button(context, '利用者証明書読み取り', SelfCertPageName),
             ],
           ),
         ),

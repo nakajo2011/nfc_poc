@@ -21,8 +21,8 @@ class MyNumberCard {
   /// マイナンバーカード のNFC tag稼働かをチェックします。
   /// マイナンバーカード のICチップ(=tag)の規格はNFC-Type4Bなので、タッチしたカードがType4Bであることをチェックする。
   static bool isMyNumberCard(NfcTag tag) {
-    NfcB nfcB = NfcB.from(tag);
-    IsoDep isoDep = IsoDep.from(tag);
+    NfcB? nfcB = NfcB.from(tag);
+    IsoDep? isoDep = IsoDep.from(tag);
     if (nfcB == null || isoDep == null) {
       // NFC-Type4B => NFC Type-B + ISO-DEP(=Tag Type-4)なので両方満たしてない場合はマイナンバーカード ではない。
       return false;
@@ -30,9 +30,9 @@ class MyNumberCard {
     return isMyNumberApplicationData(nfcB) && isMyNumberProtocolInfo(nfcB);
   }
 
-  static MyNumberCard from(NfcTag tag) {
+  static MyNumberCard? from(NfcTag tag) {
     if (!isMyNumberCard(tag)) return null;
-    return MyNumberCard(NfcB.from(tag), IsoDep.from(tag));
+    return MyNumberCard(NfcB.from(tag)!, IsoDep.from(tag)!);
   }
 
   static isMyNumberApplicationData(NfcB nfcB) =>
@@ -120,7 +120,7 @@ class TextConfirmAP {
     APDUResponse res = await communicator
         .read(APDUCommands.readBinary(Uint8List.fromList([0x00, 0x00]), 17));
     print(res.toString());
-    return "\n\tマイナンバー：${String.fromCharCodes(res.bodyBytes.sublist(3, 15))}";
+    return "\n\tマイナンバー：${String.fromCharCodes(res.bodyBytes!.sublist(3, 15))}";
   }
 
   /// PINを解除して基本４情報を取得します。
@@ -133,7 +133,7 @@ class TextConfirmAP {
         .read(APDUCommands.readBinary(Uint8List.fromList([0x00, 0x00]), 7));
     print("res=${res.toString()}");
     ASN1Length asn1Length = ASN1Length.decodeLength(
-        res.bodyBytes.sublist(1)); // libasn1 がtag.id=31に対応してないので、1byteずらしてあげる。
+        res.bodyBytes!.sublist(1)); // libasn1 がtag.id=31に対応してないので、1byteずらしてあげる。
     print("data.length=${asn1Length.length}");
     Uint8List infoBytes = await communicator
         .readBigBinary(asn1Length.length + asn1Length.valueStartPosition);
@@ -143,7 +143,7 @@ class TextConfirmAP {
 
   Attributes parseAttributes(Uint8List buf) {
     int position = 0;
-    List<Uint8List> attrBufs = List();
+    List<Uint8List> attrBufs = [];
     while (position < buf.length) {
       int tag = buf[position];
       int tagId = tag & 0x1F;
@@ -181,10 +181,10 @@ class Attributes {
   }
 
   Uint8List header;
-  String name; // utf8
-  String address; // utf8
-  String birth; // ascii numbers
-  int sex; // ascii id
+  String? name; // utf8
+  String? address; // utf8
+  String? birth; // ascii numbers
+  int? sex; // ascii id
 
   String toString() {
     return "名前: $name\n" + "住所: $address\n" + "生年月日: $birth\n" + "性別: $sex\n";
@@ -222,7 +222,7 @@ class CertificateAP {
     APDUResponse resp = await communicator
         .read(APDUCommands.readBinary(Uint8List.fromList([0x00, 0x00]), 4));
 
-    ASN1Length asn1Length = ASN1Length.decodeLength(resp.bodyBytes);
+    ASN1Length asn1Length = ASN1Length.decodeLength(resp.bodyBytes!);
     // TLVなので、TL部分(=4byte)を足したものが全体のデータサイズ
     int dataLength = asn1Length.length + asn1Length.valueStartPosition;
     print("length=${dataLength}");
@@ -239,8 +239,8 @@ class CertificateAP {
 
       APDUResponse res = await communicator
           .read(APDUCommands.readBinary(int16Bytes(i), perLength));
-      print("perLength=${perLength}, readBytes=${res.bodyBytes.length}");
-      buf.setAll(i, res.bodyBytes);
+      print("perLength=${perLength}, readBytes=${res.bodyBytes!.length}");
+      buf.setAll(i, res.bodyBytes!);
       print("buf.length=${buf.length}");
     }
     return buf;

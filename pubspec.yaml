@@ -18,17 +18,20 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.4"
 
 dependencies:
   flutter:
     sdk: flutter
-  nfc_manager: ^2.0.2
-  flutter_riverpod: ^0.12.1
-  state_notifier: ^0.6.0
-  asn1lib: ^0.6.0
-  convert: ^2.1.1
+  nfc_manager: ^3.0.0
+  flutter_riverpod: ^0.14.0
+  state_notifier: ^0.7.0
+  convert: ^3.0.0
+  x509:
+    git:
+      url: https://github.com/nakajo2011/x509.git
+      ref: support_unknown_policyidentifier
 
 
   # The following adds the Cupertino Icons font to your application.

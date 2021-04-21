@@ -1,24 +1,22 @@
 import 'package:flutter_riverpod/all.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
-class NFCState {
+class SelfCertState {
   final bool? isNFCSupported;
   String? stateMessage;
-  String? pinCode;
-  NFCState({this.isNFCSupported, this.stateMessage, this.pinCode});
+  SelfCertState({this.isNFCSupported, this.stateMessage});
 
-  NFCState copyWith({isNFCSupported, stateMessage, pinCode}) {
+  SelfCertState copyWith({isNFCSupported, stateMessage}) {
     bool supported = isNFCSupported == null ? this.isNFCSupported : isNFCSupported;
     String msg = stateMessage == null ? this.stateMessage : stateMessage;
-    String pcode = pinCode == null ? this.pinCode : pinCode;
-    return NFCState(isNFCSupported: supported, stateMessage: msg, pinCode: pcode);
+    return SelfCertState(isNFCSupported: supported, stateMessage: msg);
   }
 }
 
-/// NFCの読み取り状況を通知するためのNotifier
-class NFCNotifier extends StateNotifier<NFCState> {
+/// マイナンバーカード から自己証明書の読み取りを通知するためのNotifier
+class SelfCertReadNotifier extends StateNotifier<SelfCertState> {
   NFCProvider _nfcProvider = NFCProvider();
-  NFCNotifier() : super(NFCState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
+  SelfCertReadNotifier() : super(SelfCertState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
     _nfcProvider.setHandler(stateHandler);
     checkAvailable();
   }
@@ -29,18 +27,14 @@ class NFCNotifier extends StateNotifier<NFCState> {
   }
 
   /// NFCとの通信を開始します。
-  Future<void> connect(String pinCode) async {
+  Future<void> connect() async {
     state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
-    await _nfcProvider.connect(pinCode);
+    await _nfcProvider.readSelfCert();
     return;
   }
 
   /// NFCが利用可能かチェックします。
   Future<void> checkAvailable() async {
     state = state.copyWith(isNFCSupported: await _nfcProvider.checkNFCAvailable());
-  }
-
-  void setPinCode(String code) {
-    state = state.copyWith(pinCode: code);
   }
 }

@@ -6,8 +6,8 @@ class EasyTextField extends StatefulWidget {
   final String initialText; // 初期入力値
 
   EasyTextField({
-    Key key,
-    this.initialText,
+    required Key key,
+    required this.initialText,
   }) : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class EasyTextField extends StatefulWidget {
 }
 
 class EasyTextFieldState extends State<EasyTextField> {
-  TextEditingController controller;
+  TextEditingController? controller;
 
   @override
   void initState() {
@@ -28,7 +28,9 @@ class EasyTextFieldState extends State<EasyTextField> {
 
   @override
   void dispose() {
-    controller.dispose();
+    if(controller != null) {
+      controller!.dispose();
+    }
     super.dispose();
   }
 

@@ -124,6 +124,9 @@ class NFCProvider {
   Future<void> readCertCallBack(NfcTag tag) async {
     print("readCertCallBack started");
     try {
+      if(tag.data['isodep']['historicalBytes'] == null) {
+        tag.data['isodep']['historicalBytes'] = Uint8List.fromList([0x00]);
+      }
       tag.data.entries.forEach((element) {
         print("Tag.entries: ${element.key}: ${element.value.toString()}");
       });

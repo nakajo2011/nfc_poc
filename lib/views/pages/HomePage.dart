@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfc_poc/main.dart';
-import 'package:nfc_poc/viewmodels/NFCNotifier.dart';
-import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 
 class CounterNotifier extends StateNotifier<int> {
   CounterNotifier() : super(10);
@@ -14,17 +12,11 @@ class CounterNotifier extends StateNotifier<int> {
 }
 
 class HomePage extends ConsumerWidget {
-  final counterProvider = StateNotifierProvider((_) => CounterNotifier());
-  final nfcProvider = StateNotifierProvider((_) => NFCNotifier());
-
   HomePage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final textFieldKey = GlobalKey<EasyTextFieldState>();
-    final NFCNotifier nfc = watch(nfcProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(this.title),
@@ -36,6 +28,7 @@ class HomePage extends ConsumerWidget {
             children: <Widget>[
               button(context, '券面情報読み取り', PersonalInfoPageName),
               button(context, '利用者証明書読み取り', SelfCertPageName),
+              button(context, '署名の作成', CreateSignaturePageName),
             ],
           ),
         ),

@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/platform_tags.dart';
 
 typedef StateHandlerCB = void Function(String stateMessage);
 
@@ -29,7 +30,12 @@ abstract class Communicator {
       tag.data.entries.forEach((element) {
         print("Tag.entries: ${element.key}: ${element.value.toString()}");
       });
-      await process(tag);
+      IsoDep? isodep = IsoDep.from(tag);
+      if (isodep == null) {
+        notify("不明なNFCです。 ndef=${isodep}");
+      } else {
+        await process(isodep);
+      }
     } finally {
       NfcManager.instance.stopSession(); // 読み込み終了
       print("stop nfc scan.");
@@ -37,5 +43,5 @@ abstract class Communicator {
   }
 
   // サブクラスが実装すべきマイナンバーカードとの固有の通信処理
-  Future<void> process(NfcTag tag);
+  Future<void> process(IsoDep isoDep);
 }

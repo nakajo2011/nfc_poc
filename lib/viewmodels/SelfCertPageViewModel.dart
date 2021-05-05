@@ -15,9 +15,9 @@ class SelfCertState {
 }
 
 /// マイナンバーカード から自己証明書の読み取りを通知するためのNotifier
-class SelfCertReadNotifier extends StateNotifier<SelfCertState> {
+class SelfCertPageViewModel extends StateNotifier<SelfCertState> {
   NFCProvider _nfcProvider = NFCProvider();
-  SelfCertReadNotifier() : super(SelfCertState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
+  SelfCertPageViewModel() : super(SelfCertState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
     _nfcProvider.setHandler(stateHandler);
     checkAvailable();
   }

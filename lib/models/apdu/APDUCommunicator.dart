@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/ByteConverter.dart';
 import 'package:nfc_poc/models/apdu/APDUCommand.dart';
 import 'package:nfc_poc/models/apdu/APDUErrors.dart';
-import 'package:collection/collection.dart';
 
 /**
  * APDU通信を行うクラス

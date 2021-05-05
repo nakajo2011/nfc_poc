@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:nfc_poc/models/providers/NFCProvider.dart';
-import 'package:nfc_poc/viewmodels/NFCNotifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfc_poc/viewmodels/SelfCertReadNotifier.dart';
-import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 
 /**
  * 自己証明書を読み取るためのページ
@@ -97,9 +94,9 @@ Container boxShadow(Widget child) {
   );
 }
 
-RaisedButton readNfcButton(bool nfcAvailable, void Function()? func) {
+ElevatedButton readNfcButton(bool nfcAvailable, void Function()? func) {
   Color bcolor = nfcAvailable ? Colors.lightBlueAccent : Colors.black12;
-  return RaisedButton(
+  return ElevatedButton(
     child: const Text(
       'マイナンバーカードの読み取り',
       style: TextStyle(
@@ -107,8 +104,10 @@ RaisedButton readNfcButton(bool nfcAvailable, void Function()? func) {
         fontSize: 20,
       ),
     ),
-    color: bcolor,
-    textColor: Colors.white,
+    style: ElevatedButton.styleFrom(
+      primary: bcolor, //change background color of button
+      onPrimary: Colors.white, //change text color of button
+    ),
     onPressed: nfcAvailable ? func : null,
   );
 }

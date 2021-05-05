@@ -7,10 +7,10 @@ class NFCState {
   String? pinCode;
   NFCState({this.isNFCSupported, this.stateMessage, this.pinCode});
 
-  NFCState copyWith({isNFCSupported, stateMessage, pinCode}) {
-    bool supported = isNFCSupported == null ? this.isNFCSupported : isNFCSupported;
-    String msg = stateMessage == null ? this.stateMessage : stateMessage;
-    String pcode = pinCode == null ? this.pinCode : pinCode;
+  NFCState copyWith({bool? isNFCSupported, String? stateMessage, String? pinCode}) {
+    bool? supported = isNFCSupported == null ? this.isNFCSupported : isNFCSupported;
+    String? msg = stateMessage == null ? this.stateMessage : stateMessage;
+    String? pcode = pinCode == null ? this.pinCode : pinCode;
     return NFCState(isNFCSupported: supported, stateMessage: msg, pinCode: pcode);
   }
 }

@@ -16,10 +16,10 @@ class CounterNotifier extends StateNotifier<int> {
   }
 }
 
-final counterProvider = StateNotifierProvider((_) => CounterNotifier());
-final nfcProvider = StateNotifierProvider<NFCNotifier, NFCState>((_) => NFCNotifier());
-
 class PersonalInfoPage extends ConsumerWidget {
+  final counterProvider = StateNotifierProvider((_) => CounterNotifier());
+  final nfcProvider = StateNotifierProvider<NFCNotifier, NFCState>((_) => NFCNotifier());
+
   PersonalInfoPage({required Key key, required this.title}) : super(key: key);
   final String title;
 
@@ -28,6 +28,7 @@ class PersonalInfoPage extends ConsumerWidget {
     final textFieldKey = GlobalKey<EasyTextFieldState>();
     final NFCNotifier nfc = watch(nfcProvider.notifier);
     final NFCState state = watch(nfcProvider);
+    final pinCode = state.pinCode == null ? "" : state.pinCode!;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +41,7 @@ class PersonalInfoPage extends ConsumerWidget {
             children: <Widget>[
               EasyTextField(
                 key: textFieldKey,
-                initialText: state.pinCode!,
+                initialText: pinCode,
               ),
               readNfcButton(state.isNFCSupported!, () {
                 String inputedCode = (textFieldKey.currentState as EasyTextFieldState).controller!.text;

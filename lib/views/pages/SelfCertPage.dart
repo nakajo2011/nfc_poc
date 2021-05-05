@@ -6,14 +6,15 @@ import 'package:nfc_poc/viewmodels/SelfCertPageViewModel.dart';
  * 自己証明書を読み取るためのページ
  *
  */
-final certReader = StateNotifierProvider<SelfCertPageViewModel, SelfCertState>((_) => SelfCertPageViewModel());
-
 class SelfCertPage extends ConsumerWidget {
+  final certReader = StateNotifierProvider<SelfCertPageViewModel, SelfCertState>((_) => SelfCertPageViewModel());
+
   SelfCertPage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    print("this=${this.hashCode}");
     final SelfCertPageViewModel reader = watch(certReader.notifier);
     final SelfCertState state = watch(certReader);
 

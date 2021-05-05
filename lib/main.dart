@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
       ),
       home: HomePage(key: GlobalKey(), title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder> {
-        PersonalInfoPageName: (BuildContext context) => new PersonalInfoPage(key: GlobalKey(), title: '券面情報読み取り'),
-        SelfCertPageName: (BuildContext context) => new SelfCertPage(key: GlobalKey(), title: '自己証明書の読み取り')
+        PersonalInfoPageName: (BuildContext context) => PersonalInfoPage(key: GlobalKey(), title: '券面情報読み取り'),
+        SelfCertPageName: (BuildContext context) => SelfCertPage(key: GlobalKey(), title: '自己証明書の読み取り')
       },
     );
   }

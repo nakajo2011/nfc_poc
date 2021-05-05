@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfc_poc/viewmodels/SelfCertReadNotifier.dart';
+import 'package:nfc_poc/viewmodels/SelfCertPageViewModel.dart';
 
 /**
  * 自己証明書を読み取るためのページ
  *
  */
-final certReader = StateNotifierProvider<SelfCertReadNotifier, SelfCertState>((_) => SelfCertReadNotifier());
+final certReader = StateNotifierProvider<SelfCertPageViewModel, SelfCertState>((_) => SelfCertPageViewModel());
 
 class SelfCertPage extends ConsumerWidget {
   SelfCertPage({required Key key, required this.title}) : super(key: key);
@@ -14,7 +14,7 @@ class SelfCertPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final SelfCertReadNotifier reader = watch(certReader.notifier);
+    final SelfCertPageViewModel reader = watch(certReader.notifier);
     final SelfCertState state = watch(certReader);
 
     return Scaffold(

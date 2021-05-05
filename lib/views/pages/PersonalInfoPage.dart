@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nfc_poc/viewmodels/NFCNotifier.dart';
+import 'package:nfc_poc/viewmodels/PersonalInfoPageViewModel.dart';
 import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 
 /**
  * 券面情報を読み取るための画面
  * 4桁の暗証番号を使って、マイナンバー、名前、住所、生年月日、性別をマイナンバーカード から読み出す。
  */
-class CounterNotifier extends StateNotifier<int> {
-  CounterNotifier() : super(10);
-
-  void increment() {
-    print("increment counter");
-    state = state + 1;
-  }
-}
-
 class PersonalInfoPage extends ConsumerWidget {
-  final counterProvider = StateNotifierProvider((_) => CounterNotifier());
-  final nfcProvider = StateNotifierProvider<NFCNotifier, NFCState>((_) => NFCNotifier());
+  final nfcProvider = StateNotifierProvider<PersonalInfoPageViewModel, NFCState>((_) => PersonalInfoPageViewModel());
 
   PersonalInfoPage({required Key key, required this.title}) : super(key: key);
   final String title;
@@ -26,7 +16,7 @@ class PersonalInfoPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final textFieldKey = GlobalKey<EasyTextFieldState>();
-    final NFCNotifier nfc = watch(nfcProvider.notifier);
+    final PersonalInfoPageViewModel nfc = watch(nfcProvider.notifier);
     final NFCState state = watch(nfcProvider);
     final pinCode = state.pinCode == null ? "" : state.pinCode!;
 

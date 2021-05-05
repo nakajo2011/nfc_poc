@@ -17,9 +17,9 @@ class NFCState {
 }
 
 /// NFCの読み取り状況を通知するためのNotifier
-class NFCNotifier extends StateNotifier<NFCState> {
+class PersonalInfoPageViewModel extends StateNotifier<NFCState> {
   NFCProvider _nfcProvider = NFCProvider();
-  NFCNotifier() : super(NFCState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
+  PersonalInfoPageViewModel() : super(NFCState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
     _nfcProvider.setHandler(stateHandler);
     checkAvailable();
   }

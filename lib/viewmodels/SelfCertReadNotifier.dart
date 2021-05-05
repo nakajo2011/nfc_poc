@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nfc_poc/models/mynumber/SelfCertificateReader.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
 class SelfCertState {
@@ -29,7 +30,8 @@ class SelfCertReadNotifier extends StateNotifier<SelfCertState> {
   /// NFCとの通信を開始します。
   Future<void> connect() async {
     state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
-    await _nfcProvider.readSelfCert();
+    var reader = SelfCertificateReader(stateHandler: stateHandler);
+    await _nfcProvider.connect(reader);
     return;
   }
 

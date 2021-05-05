@@ -1,10 +1,10 @@
-import 'dart:typed_data';
 
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
 import 'package:nfc_poc/models/apdu/APDUCommunicator.dart';
 import 'package:nfc_poc/models/apdu/APDUErrors.dart';
+import 'package:nfc_poc/models/mynumber/Communicator.dart';
 
 class PinCodeException implements Exception {
   String message;
@@ -12,17 +12,12 @@ class PinCodeException implements Exception {
   PinCodeException(this.message);
 }
 
-typedef StateHandlerCB = void Function(String stateMessage);
-
 // 券面情報APから券面情報を取得するためのReaderクラス
-class KenmenInfoAPReader {
-  StateHandlerCB? stateHandler;
+class KenmenInfoAPReader extends Communicator {
   String pinCode;
-  KenmenInfoAPReader(this.pinCode, this.stateHandler);
 
-  void notify(String message) {
-    if (this.stateHandler != null) this.stateHandler!(message);
-  }
+  KenmenInfoAPReader(this.pinCode, StateHandlerCB? handler)
+      : super(stateHandler: handler);
 
   // pinCodeが数字４桁で渡されているかチェックする。
   void verifyPinCode() {
@@ -36,19 +31,10 @@ class KenmenInfoAPReader {
     }
   }
 
-  // 券面情報を読み取るためのコールバック関数
-  Future<void> nfcTagCallback(NfcTag tag) async {
-    print("nfcTagCallback started");
+  // 券面情報を読み取る処理
+  @override
+  Future<void> process(NfcTag tag) async {
     try {
-      if(tag.data['isodep']['historicalBytes'] == null) {
-        tag.data['isodep']['historicalBytes'] = Uint8List.fromList([0x00]);
-      }
-      tag.data.entries.forEach((element) {
-        print("Tag.entries: ${element.key}: ${element.value.toString()}");
-      });
-      tag.data.entries.forEach((element) {
-        print("Tag.entries: ${element.key}: ${element.value.toString()}");
-      });
       notify("NFCの読み取り中....");
 
       Ndef? ndef = Ndef.from(tag);
@@ -71,9 +57,6 @@ class KenmenInfoAPReader {
         notify("NFCの読み取りでエラーが発生しました。 ${e.toString()}");
         print(stackTrace.toString());
       }
-    } finally {
-      NfcManager.instance.stopSession(); // 読み込み終了
-      print("stop nfc scan.");
     }
   }
 }

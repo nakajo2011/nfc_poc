@@ -5,6 +5,7 @@ import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
 import 'package:nfc_poc/models/apdu/APDUCommunicator.dart';
 import 'package:nfc_poc/models/apdu/APDUErrors.dart';
+import 'package:nfc_poc/models/mynumber/KenmenInfoAPReader.dart';
 import 'package:x509/x509.dart';
 
 /**
@@ -50,22 +51,11 @@ class NFCProvider {
   }
 
   // マイナンバーカード にアクセスして券面情報を読み取る。
-  Future<void> connect(String pinCode) async {
-    this.pinCode = pinCode;
-    if (this.pinCode!.length != 4) {
-      notify("エラー:暗証番号の桁数が４桁ではありません。");
-      return;
-    }
-    try {
-      int.parse(this.pinCode!);
-    } catch (e) {
-      notify("エラー:暗証番号は数字４桁を入力してください。: $e");
-    }
-
+  Future<void> connect(KenmenInfoAPReader reader) async {
     if (await checkNFCAvailable()) {
       NfcManager _manager = NfcManager.instance;
       _manager.startSession(
-          onDiscovered: nfcTagCallback,
+          onDiscovered: reader.nfcTagCallback,
           alertMessage: "NFC Read Error!!!!",
           onError: (NfcError error) async {
             notify(

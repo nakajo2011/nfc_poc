@@ -13,10 +13,10 @@ class CounterNotifier extends StateNotifier<int> {
   }
 }
 
-final counterProvider = StateNotifierProvider((_) => CounterNotifier());
-final nfcProvider = StateNotifierProvider((_) => NFCNotifier());
-
 class HomePage extends ConsumerWidget {
+  final counterProvider = StateNotifierProvider((_) => CounterNotifier());
+  final nfcProvider = StateNotifierProvider((_) => NFCNotifier());
+
   HomePage({required Key key, required this.title}) : super(key: key);
   final String title;
 

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nfc_poc/models/mynumber/KenmenInfoAPReader.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
 class NFCState {
@@ -31,8 +32,18 @@ class NFCNotifier extends StateNotifier<NFCState> {
   /// NFCとの通信を開始します。
   Future<void> connect(String pinCode) async {
     state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
-    await _nfcProvider.connect(pinCode);
-    return;
+    final reader = KenmenInfoAPReader(pinCode, stateHandler);
+    try {
+      reader.verifyPinCode();
+      await _nfcProvider.connect(reader);
+      return;
+    } catch(e) {
+      if(e is PinCodeException) {
+       state = state.copyWith(stateMessage: (e as PinCodeException).message);
+      } else {
+        state = state.copyWith(stateMessage: e.toString());
+      }
+    }
   }
 
   /// NFCが利用可能かチェックします。

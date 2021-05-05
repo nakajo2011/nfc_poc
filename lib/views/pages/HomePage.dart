@@ -28,6 +28,7 @@ class HomePage extends ConsumerWidget {
             children: <Widget>[
               button(context, '券面情報読み取り', PersonalInfoPageName),
               button(context, '利用者証明書読み取り', SelfCertPageName),
+              button(context, '署名の作成', CreateSignaturePageName),
             ],
           ),
         ),

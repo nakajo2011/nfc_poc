@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nfc_poc/views/pages/CreateSignaturePage.dart';
 import 'package:nfc_poc/views/pages/HomePage.dart';
 import 'package:nfc_poc/views/pages/PersonalInfoPage.dart';
 import 'package:nfc_poc/views/pages/SelfCertPage.dart';
 
 const String PersonalInfoPageName = "personalInfo";
 const String SelfCertPageName = "selfCert";
+const String CreateSignaturePageName = "createSig";
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -36,7 +38,8 @@ class MyApp extends StatelessWidget {
       home: HomePage(key: GlobalKey(), title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder> {
         PersonalInfoPageName: (BuildContext context) => PersonalInfoPage(key: GlobalKey(), title: '券面情報読み取り'),
-        SelfCertPageName: (BuildContext context) => SelfCertPage(key: GlobalKey(), title: '自己証明書の読み取り')
+        SelfCertPageName: (BuildContext context) => SelfCertPage(key: GlobalKey(), title: '自己証明書の読み取り'),
+        CreateSignaturePageName: (BuildContext context) => CreateSignaturePage(key: GlobalKey()),
       },
     );
   }

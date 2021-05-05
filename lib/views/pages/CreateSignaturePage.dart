@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nfc_poc/viewmodels/CreateSignaturePageViewModel.dart';
 import 'package:nfc_poc/viewmodels/PersonalInfoPageViewModel.dart';
 import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 
 /**
- * 券面情報を読み取るための画面
- * 4桁の暗証番号を使って、マイナンバー、名前、住所、生年月日、性別をマイナンバーカード から読み出す。
+ * マイナンバーカードの利用者証明書に登録されている鍵を使って署名を生成する画面
  */
-class PersonalInfoPage extends ConsumerWidget {
-  final nfcProvider = StateNotifierProvider<PersonalInfoPageViewModel, NFCState>((_) => PersonalInfoPageViewModel());
+class CreateSignaturePage extends ConsumerWidget {
+  final nfcProvider = StateNotifierProvider<CreateSignaturePageViewModel, SigState>((_) => CreateSignaturePageViewModel());
 
-  PersonalInfoPage({required Key key, required this.title}) : super(key: key);
-  final String title;
+  CreateSignaturePage({required Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final textFieldKey = GlobalKey<EasyTextFieldState>();
-    final PersonalInfoPageViewModel nfc = watch(nfcProvider.notifier);
-    final NFCState state = watch(nfcProvider);
+    final pinCodeInputKey = GlobalKey<EasyTextFieldState>();
+    final messageInputKey = GlobalKey<EasyTextFieldState>();
+    final CreateSignaturePageViewModel nfc = watch(nfcProvider.notifier);
+    final SigState state = watch(nfcProvider);
     final pinCode = state.pinCode == null ? "" : state.pinCode!;
+    final message = state.message == null ? "" : state.message!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.title),
+        title: Text("署名作成"),
       ),
       body: Container(
         child: Center(
@@ -30,15 +31,20 @@ class PersonalInfoPage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               EasyTextField(
-                key: textFieldKey,
+                key: pinCodeInputKey,
                 initialText: pinCode,
                 hintText: "暗証番号4桁",
               ),
+              EasyTextField(
+                key: messageInputKey,
+                initialText: message,
+                hintText: "署名対象のメッセージ",
+              ),
               readNfcButton(state.isNFCSupported!, () {
-                String inputedCode = (textFieldKey.currentState as EasyTextFieldState).controller!.text;
-                nfc.setPinCode(inputedCode);
-                print(inputedCode);
-                nfc.connect(inputedCode);
+                String inputedCode = (pinCodeInputKey.currentState as EasyTextFieldState).controller!.text;
+                String msg = (messageInputKey.currentState as EasyTextFieldState).controller!.text;
+                print("$inputedCode, $msg");
+                nfc.connect(inputedCode, msg);
               }),
               Text(
                 'NFCサポート: ${state.isNFCSupported! ? "OK" : "NFCがOFFになっています。"}',

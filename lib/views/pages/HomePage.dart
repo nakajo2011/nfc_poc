@@ -44,8 +44,8 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-RaisedButton button(BuildContext context, final String title, final String nextPageName) {
-  return RaisedButton(
+ElevatedButton button(BuildContext context, final String title, final String nextPageName) {
+  return ElevatedButton(
     child: Text(
       title,
       style: TextStyle(
@@ -53,8 +53,10 @@ RaisedButton button(BuildContext context, final String title, final String nextP
         fontSize: 20,
       ),
     ),
-    color: Colors.lightBlueAccent,
-    textColor: Colors.white,
+    style: ElevatedButton.styleFrom(
+      primary: Colors.lightBlueAccent, //change background color of button
+      onPrimary: Colors.white, //change text color of button
+    ),
     onPressed: () => {Navigator.of(context).pushNamed(nextPageName)},
   );
 }

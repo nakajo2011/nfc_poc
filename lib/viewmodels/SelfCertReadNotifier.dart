@@ -31,7 +31,7 @@ class SelfCertReadNotifier extends StateNotifier<SelfCertState> {
   Future<void> connect() async {
     state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
     var reader = SelfCertificateReader(stateHandler: stateHandler);
-    await _nfcProvider.readSelfCert(reader);
+    await _nfcProvider.connect(reader);
     return;
   }
 

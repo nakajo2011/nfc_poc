@@ -1,7 +1,6 @@
 
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:nfc_poc/models/mynumber/KenmenInfoAPReader.dart';
-import 'package:nfc_poc/models/mynumber/SelfCertificateReader.dart';
+import 'package:nfc_poc/models/mynumber/Communicator.dart';
 
 /**
  * デバイスのNFC機器とやりとりするクラス。
@@ -29,24 +28,8 @@ class NFCProvider {
     return isAvailable;
   }
 
-  // マイナンバーカード にアクセスして自己証明書を読み取る
-  Future<void> readSelfCert(SelfCertificateReader reader) async {
-    if (await checkNFCAvailable()) {
-      NfcManager _manager = NfcManager.instance;
-      _manager.startSession(
-          onDiscovered: reader.nfcTagCallback,
-          alertMessage: "NFC Read Error!!!!",
-          onError: (NfcError error) async {
-            notify(
-                "読み取り中にエラーが発生しました。info: ${error.message}, type: ${error.type}, details: ${error.details}");
-          });
-    } else {
-      throw new Exception("NFCがOFFになっているか、未対応の端末です。");
-    }
-  }
-
-  // マイナンバーカード にアクセスして券面情報を読み取る。
-  Future<void> connect(KenmenInfoAPReader reader) async {
+  // マイナンバーカード にアクセスして情報を読み取る
+  Future<void> connect(Communicator reader) async {
     if (await checkNFCAvailable()) {
       NfcManager _manager = NfcManager.instance;
       _manager.startSession(

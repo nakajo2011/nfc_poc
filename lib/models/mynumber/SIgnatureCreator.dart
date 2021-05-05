@@ -35,17 +35,23 @@ class SignatureCreator extends Communicator {
     }
   }
 
+  toHex(num) => num.toRadixString(16).padLeft(2, "0");
+
   // 券面情報を読み取る処理
   @override
   Future<void> process(IsoDep isoDep) async {
     try {
-      notify("NFCの読み取り中....");
-      notify("実装中。。。。");
+      // notify("NFCの読み取り中....");
+      // notify("実装中。。。。");
+      APDUCommunicator communicator = APDUCommunicator(isoDep);
+      List<int> sign =
+      await CertificateAP(communicator).createSignature(pinCode, msg!);
+      notify("署名： size=${sign.length} \nbody: ${sign.map((e) => toHex(e)).join(":")}");
     } catch (e, stackTrace) {
       if (e is InvalidPINException) {
         notify("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回");
       } else {
-        notify("NFCの読み取りでエラーが発生しました。 ${e.toString()}");
+        notify("NFCの読み取りでエラーが発生しました。ボタンを押してやり直してください。 ${e.toString()}");
         print(stackTrace.toString());
       }
     }

@@ -5,6 +5,7 @@ import 'package:asn1lib/asn1lib.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/ByteConverter.dart';
+import 'package:nfc_poc/models/apdu/APDUCommand.dart';
 import 'package:nfc_poc/models/apdu/APDUCommunicator.dart';
 import 'package:nfc_poc/models/apdu/APDUErrors.dart';
 
@@ -40,6 +41,13 @@ class MyNumberCard {
 
   static isMyNumberProtocolInfo(NfcB nfcB) =>
       nfcB.protocolInfo == Uint8List.fromList(MyNumberCard.PROTOCOL_INFO);
+}
+
+class MyNumberCardExtendedAPDUCommand {
+  // マイナンバーカードでの署名生成命令
+  static APDUCommand computeDigitalSignature(List<int> msgData) {
+    return APDUCommand4(0x80, 0x2a, 0x00, 0x80, Uint8List.fromList(msgData), 0);
+  }
 }
 
 /// 券面入力補助AP
@@ -196,7 +204,7 @@ class CertificateAP {
 
   APDUCommunicator communicator;
 
-  // 電子証明書DF D3:93:F0:00:26:01:00:00:00:01
+  // 電子証明書DF D3:92:F0:00:26:01:00:00:00:01
   final List<int> DFID = [
     0xD3,
     0x92,
@@ -210,12 +218,20 @@ class CertificateAP {
     0x01
   ];
 
-  /// ユーザ認証用証明書
+  /// 利用者用証明書
   final List<int> userCertificateEFID = [0x00, 0x0A];
+
+  /// 利用者用証明書用PIN
+  final List<int> certPinEFID = [0x00, 0x18];
+
+  /// 利用者用鍵
+  final List<int> userPrivKeyEFID = [0x00, 0x17];
+
 
   static final String PEM_CERT_START = "-----BEGIN CERTIFICATE-----\n";
   static final String PEM_CERT_END = "\n-----END CERTIFICATE-----\n";
 
+  /// 利用者用証明書を取得します。
   Future<String> selectUserCertificate() async {
     await communicator.read(APDUCommands.selectDF(DFID));
     await communicator.read(APDUCommands.selectEF(userCertificateEFID));
@@ -229,6 +245,27 @@ class CertificateAP {
     Uint8List buf = await readBigBinary(dataLength);
     print("buf=$buf");
     return toPem(buf);
+  }
+
+  /// PINを解除して利用者用証明書の鍵で署名を作成します。
+  Future<Uint8List> createSignature(String pinCode, String msg) async {
+    await this._verifyPIN(pinCode); //PINコードを解除
+    await communicator.read(APDUCommands.selectEF(userPrivKeyEFID)); // 利用者用鍵を選択
+    APDUResponse res = await communicator
+        .read(MyNumberCardExtendedAPDUCommand.computeDigitalSignature(msg.codeUnits));
+    print("complete generate sign.");
+    return res.bodyBytes!;
+  }
+
+  ///  利用者証明書のPINを解除
+  Future<String> _verifyPIN(String pinCode) async {
+    await communicator.read(APDUCommands.selectDF(DFID));
+    await communicator.read(APDUCommands.selectEF(certPinEFID));
+    APDUResponse res =
+    await communicator.read(APDUCommands.verify(pinCode.codeUnits));
+    print("res=${res.toString()}");
+    print("success verify pincode!");
+    return "PINの解除に成功しました。";
   }
 
   Future<Uint8List> readBigBinary(int length) async {

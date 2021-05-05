@@ -1,4 +1,3 @@
-
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
@@ -38,16 +37,10 @@ class SignatureCreator extends Communicator {
 
   // 券面情報を読み取る処理
   @override
-  Future<void> process(NfcTag tag) async {
+  Future<void> process(IsoDep isoDep) async {
     try {
       notify("NFCの読み取り中....");
-
-      IsoDep? isodep = IsoDep.from(tag);
-      if (isodep == null) {
-        notify("不明なNFCです。 ndef=${isodep}");
-      } else {
-        notify("実装中。。。。");
-      }
+      notify("実装中。。。。");
     } catch (e, stackTrace) {
       if (e is InvalidPINException) {
         notify("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回");

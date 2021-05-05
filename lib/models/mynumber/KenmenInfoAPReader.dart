@@ -1,4 +1,3 @@
-
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
@@ -33,23 +32,16 @@ class KenmenInfoAPReader extends Communicator {
 
   // 券面情報を読み取る処理
   @override
-  Future<void> process(NfcTag tag) async {
+  Future<void> process(IsoDep isoDep) async {
     try {
       notify("NFCの読み取り中....");
-
-      Ndef? ndef = Ndef.from(tag);
-      IsoDep? isodep = IsoDep.from(tag);
-      if (isodep == null) {
-        notify("不明なNFCです。 ndef=${ndef}");
-      } else {
-        APDUCommunicator communicator = APDUCommunicator(isodep);
-        TextConfirmAP textAP = TextConfirmAP(communicator);
-        String result = await textAP.readMyNumber(this.pinCode);
-        result += await textAP.readAttributes(this.pinCode);
-        int remainingCount = await textAP.lookupPIN();
-        result += "券面入力補助PIN 残り試行回数：${remainingCount}回";
-        notify("NFCの読み取り終了：${result}");
-      }
+      APDUCommunicator communicator = APDUCommunicator(isoDep);
+      TextConfirmAP textAP = TextConfirmAP(communicator);
+      String result = await textAP.readMyNumber(this.pinCode);
+      result += await textAP.readAttributes(this.pinCode);
+      int remainingCount = await textAP.lookupPIN();
+      result += "券面入力補助PIN 残り試行回数：${remainingCount}回";
+      notify("NFCの読み取り終了：${result}");
     } catch (e, stackTrace) {
       if (e is InvalidPINException) {
         notify("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回");

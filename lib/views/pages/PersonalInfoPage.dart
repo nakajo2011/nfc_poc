@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:nfc_poc/models/providers/NFCProvider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfc_poc/viewmodels/NFCNotifier.dart';
 import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 

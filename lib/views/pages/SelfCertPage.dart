@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:nfc_poc/models/providers/NFCProvider.dart';
-import 'package:nfc_poc/viewmodels/NFCNotifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfc_poc/viewmodels/SelfCertReadNotifier.dart';
-import 'package:nfc_poc/views/widgets/EasyTextField.dart';
 
 /**
  * 自己証明書を読み取るためのページ

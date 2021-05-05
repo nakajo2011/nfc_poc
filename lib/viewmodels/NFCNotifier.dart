@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nfc_poc/models/providers/NFCProvider.dart';
 
 class NFCState {

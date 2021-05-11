@@ -7,26 +7,24 @@ import 'package:x509/x509.dart';
 
 // 利用者用証明書を読み取るためのreaderクラス
 class SelfCertificateReader extends Communicator {
-  SelfCertificateReader({StateHandlerCB? stateHandler})
-      : super(stateHandler: stateHandler);
+  SelfCertificateReader()
+      : super();
 
   // 自己証明書を読み取るためにマイナンバーカード とやり取りする処理。
   Future<void> process(IsoDep isoDep) async {
     print("readCertCallBack started");
     try {
-      notify("NFCの読み取り中....");
-
       APDUCommunicator communicator = APDUCommunicator(isoDep);
       String certificatePEM =
           await CertificateAP(communicator).selectUserCertificate();
-      notify("NFCの読み取り終了: ${parsePem(certificatePEM).first}");
+      completer.complete("NFCの読み取り終了: ${parsePem(certificatePEM).first}");
       for (int i = 0; i < certificatePEM.length; i += 256) {
         int endIndex =
             i + 256 > certificatePEM.length ? certificatePEM.length : i + 256;
         print(certificatePEM.substring(i, endIndex));
       }
     } catch (e, stackTrace) {
-      notify("NFCの読み取りでエラーが発生しました。 ${e.toString()}");
+      completer.completeError("NFCの読み取りでエラーが発生しました。 ${e.toString()}", stackTrace);
       print(stackTrace.toString());
     }
   }

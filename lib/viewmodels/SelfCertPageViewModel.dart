@@ -29,10 +29,14 @@ class SelfCertPageViewModel extends StateNotifier<SelfCertState> {
 
   /// NFCとの通信を開始します。
   Future<void> connect() async {
-    state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
-    var reader = SelfCertificateReader(stateHandler: stateHandler);
-    await _nfcProvider.connect(reader);
-    return;
+    try {
+      state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
+      var reader = SelfCertificateReader();
+      String result = await _nfcProvider.connect(reader);
+      state = state.copyWith(stateMessage: result);
+    } catch (e) {
+      state= state.copyWith(stateMessage: e.toString());
+    }
   }
 
   /// NFCが利用可能かチェックします。

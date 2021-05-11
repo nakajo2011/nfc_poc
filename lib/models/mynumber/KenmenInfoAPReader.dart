@@ -1,4 +1,3 @@
-import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:nfc_poc/models/MyNumberCard.dart';
 import 'package:nfc_poc/models/apdu/APDUCommunicator.dart';
@@ -15,8 +14,8 @@ class PinCodeException implements Exception {
 class KenmenInfoAPReader extends Communicator {
   String pinCode;
 
-  KenmenInfoAPReader(this.pinCode, StateHandlerCB? handler)
-      : super(stateHandler: handler);
+  KenmenInfoAPReader(this.pinCode)
+      : super();
 
   // pinCodeが数字４桁で渡されているかチェックする。
   void verifyPinCode() {
@@ -34,19 +33,18 @@ class KenmenInfoAPReader extends Communicator {
   @override
   Future<void> process(IsoDep isoDep) async {
     try {
-      notify("NFCの読み取り中....");
       APDUCommunicator communicator = APDUCommunicator(isoDep);
       TextConfirmAP textAP = TextConfirmAP(communicator);
       String result = await textAP.readMyNumber(this.pinCode);
       result += await textAP.readAttributes(this.pinCode);
       int remainingCount = await textAP.lookupPIN();
       result += "券面入力補助PIN 残り試行回数：${remainingCount}回";
-      notify("NFCの読み取り終了：${result}");
+      completer.complete("NFCの読み取り終了：${result}");
     } catch (e, stackTrace) {
       if (e is InvalidPINException) {
-        notify("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回");
+        completer.completeError(Exception("４桁の暗証番号が違います。残り試行回数：${(e as InvalidPINException).retry}回"));
       } else {
-        notify("NFCの読み取りでエラーが発生しました。 ${e.toString()}");
+        completer.completeError(Exception("NFCの読み取りでエラーが発生しました。 ${e.toString()}"), stackTrace);
         print(stackTrace.toString());
       }
     }

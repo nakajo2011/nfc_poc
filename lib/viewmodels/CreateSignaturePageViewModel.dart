@@ -35,11 +35,11 @@ class CreateSignaturePageViewModel extends StateNotifier<SigState> {
   /// NFCとの通信を開始します。
   Future<void> connect(String pinCode, String msg) async {
     state = state.copyWith(pinCode: pinCode, newMessage: msg, stateMessage: "マイナンバーカードをタッチしてください。");
-    final sigCreator = SignatureCreator(pinCode, msg, stateHandler);
+    final sigCreator = SignatureCreator(pinCode, msg);
     try {
       sigCreator.verify();
-      await _nfcProvider.connect(sigCreator);
-      return;
+      String result = await _nfcProvider.connect(sigCreator);
+      state = state.copyWith(stateMessage: result);
     } catch(e) {
       if(e is PinCodeAndMsgException) {
        state = state.copyWith(stateMessage: (e as PinCodeAndMsgException).message);

@@ -20,7 +20,7 @@ class NFCState {
 class PersonalInfoPageViewModel extends StateNotifier<NFCState> {
   NFCProvider _nfcProvider = NFCProvider();
   PersonalInfoPageViewModel() : super(NFCState(isNFCSupported: false, stateMessage: "ボタンを押してください。")) {
-    _nfcProvider.setHandler(stateHandler);
+    _nfcProvider.setHandler((String s) => print);
     checkAvailable();
   }
 
@@ -32,11 +32,11 @@ class PersonalInfoPageViewModel extends StateNotifier<NFCState> {
   /// NFCとの通信を開始します。
   Future<void> connect(String pinCode) async {
     state = state.copyWith(stateMessage: "マイナンバーカードをタッチしてください。");
-    final reader = KenmenInfoAPReader(pinCode, stateHandler);
+    final reader = KenmenInfoAPReader(pinCode);
     try {
       reader.verifyPinCode();
-      await _nfcProvider.connect(reader);
-      return;
+      String result = await _nfcProvider.connect(reader);
+      state = state.copyWith(stateMessage: result);
     } catch(e) {
       if(e is PinCodeException) {
        state = state.copyWith(stateMessage: (e as PinCodeException).message);
